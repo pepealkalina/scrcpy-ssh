@@ -12,8 +12,8 @@ from threading import Thread, Event
 from paramiko import SSHClient, WarningPolicy, Transport
 from paramiko_demos.forward import forward_tunnel
 from paramiko_demos.rforward import reverse_forward_tunnel
-from PySide6.QtGui import QImage, QKeyEvent, QMouseEvent, QPixmap, Qt
-from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
+from PySide6.QtGui import QImage, QKeyEvent, QPixmap
+from PySide6.QtWidgets import QApplication, QMainWindow
 
 if not QApplication.instance():
     app = QApplication([])
@@ -44,19 +44,20 @@ def connectSSH(host, user, password):
 
     stopEvent = Event()
     try:
-        tunnel = Thread(target=forward_tunnel, args=(5037, '127.0.0.1', 5037, sshTransport))
+        tunnel = Thread(target=forward_tunnel, args=(5037, '127.0.0.1', 5037, sshTransport), daemon=True)
         # forward_tunnel(5037, '127.0.0.1', 5037, sshTransport)
         tunnel.start()
         print('a')
-        reverseTunnel = Thread(target=reverse_forward_tunnel, args=(27183, '127.0.0.1', 27183, sshTransport))
+        reverseTunnel = Thread(target=reverse_forward_tunnel, args=(27183, '127.0.0.1', 27183, sshTransport), daemon=True)
         # reverse_forward_tunnel(27183, '127.0.0.1', 27183, sshTransport)
         reverseTunnel.start()
         print('b')
     except KeyboardInterrupt:
         sys.exit(0)
 
+
 class ConnectScrcpy(QMainWindow):
-    def __init__(self, serial: str):
+    def __init__(self, serial: str, ):
         super().__init__()
         self.setWindowTitle("Serial: " + serial)
         self.client = Client(device=serial)
@@ -67,7 +68,6 @@ class ConnectScrcpy(QMainWindow):
         self.label.setScaledContents(True)
         layout = QVBoxLayout()
         layout.addWidget(self.label)
-
         central = QWidget()
         central.setLayout(layout)
         self.setCentralWidget(central)
@@ -88,16 +88,10 @@ class ConnectScrcpy(QMainWindow):
         self.client.stop()
         
 
-def connectScrcpySSH():
-    connectSSH('10.11.23.166', 'morse', 'lab333')
-    print('c')
-    mainWin = ConnectScrcpy("f17f8091")
+def connectScrcpySSH(sshIP, ssUser, sshPasswd, serial):
+    connectSSH(sshIP, ssUser, sshPasswd)
+    mainWin = ConnectScrcpy(serial)
     mainWin.show()
     mainWin.client.start()
-    
 
-
-
-if __name__ == '__main__':
-    connectScrcpySSH()
 
