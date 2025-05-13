@@ -8,8 +8,7 @@ from tkinter import *
 from tkinter import messagebox
 import datetime
 from sys import exit
-import getpass
-import os
+from createUserUbuntu import createUserSSH
 
 def checkPassword(password, passwordConfirm):
     if password == passwordConfirm:
@@ -23,14 +22,6 @@ def checkExpireDate():
         return 0
     except ValueError:
         return 1
-    
-def createUser():
-    name = 'usuario_test2'
-    password = '1234'
-    addUser = "sudo useradd -m  " + name + " -p " + password
-    os.system(addUser)
-    setExpireDate = "sudo chage -E " + '2025-10-10' + " " + name
-    os.system(setExpireDate)
 
 def checkAndCreateExec():
     if checkPassword(password.get(), passwordConfirm.get()) == 1:
@@ -38,12 +29,10 @@ def checkAndCreateExec():
     elif checkExpireDate() == 1:
         messagebox.showerror("ERROR", "El formato de la fecha de expiracion no es correcto, es YYYY-MM-DD")
     else:
-        createUser()
-        
+        createUserSSH(user=user.get(), password=password.get(), expirationDate=expireDate.get(), sshUser='usuario', sshPasswd='1234', sshIP='192.168.64.5')
+        messagebox.showinfo("INFO", "El usuario " + user.get() + " se ha creado correctamente")
 
 
-    
-        
 
 root = Tk()
 root.geometry("500x400")
