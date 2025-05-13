@@ -1,15 +1,20 @@
-from cx_Freeze import setup
+from cx_Freeze import setup, Executable
 
-# Dependencies are automatically detected, but they might need fine-tuning.
-build_exe_options = {
-    "excludes": ["tkinter", "unittest"],
-    "zip_include_packages": ["encodings", "PySide6", "shiboken6"],
-}
+buildOptions = dict(
+    include_msvcr=True
+)
+
+import sys
+
+base = 'Win32GUI' if sys.platform == 'win32' else None
+
+executables = [
+    Executable('remoteScrcpyUtils.py')
+]
 
 setup(
-    name="build",
+    name="remoteScrcpyUtils",
     version="0.1",
     description="My GUI application!",
-    options={"build_exe": build_exe_options},
-    executables=[{"script": "remoteScrcpySSH.py", "base": "gui"}],
-)
+    options=dict(build_exe=buildOptions), 
+    executables=executables)
