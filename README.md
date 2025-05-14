@@ -19,7 +19,7 @@ This python script automates the following process:
     ```
 
 > [!NOTE]
-> 
+> The serial is given by adb devices, it the usb serial, is not equal to mobile serial
 
 
 
