@@ -1,7 +1,7 @@
 '''
 Filename: createExec.py
 Created Date: Monday, May 12th 2025, 9:40:10 am
-Author: Pepe Alkalina
+Author: Pedro Reina
 '''
 
 from tkinter import *
