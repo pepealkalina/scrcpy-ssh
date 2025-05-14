@@ -20,7 +20,7 @@ else:
     app = QApplication.instance()
 
 
-## Establece la connexion ssh y aplica la tunelización
+### Establishes the ssh connection and creates the tunnel
 def connectSSH(host, user, password):
     # define ssh connection basic parametres
     sshHost = host
@@ -42,19 +42,16 @@ def connectSSH(host, user, password):
                     pkey     = None)
 
     stopEvent = Event()
+    # Create a thread forevery tunnel and set daemon=true to kill them at the end of the execution
     try:
         tunnel = Thread(target=forward_tunnel, args=(5037, '127.0.0.1', 5037, sshTransport), daemon=True)
-        # forward_tunnel(5037, '127.0.0.1', 5037, sshTransport)
         tunnel.start()
-        print('a')
         reverseTunnel = Thread(target=reverse_forward_tunnel, args=(27183, '127.0.0.1', 27183, sshTransport), daemon=True)
-        # reverse_forward_tunnel(27183, '127.0.0.1', 27183, sshTransport)
         reverseTunnel.start()
-        print('b')
     except KeyboardInterrupt:
         sys.exit(0)
 
-
+### Class to generates a windows to show scrcpy-client's frame wit PySide6
 class ConnectScrcpy(QMainWindow):
     def __init__(self, serial: str, ):
         super().__init__()
@@ -86,7 +83,7 @@ class ConnectScrcpy(QMainWindow):
     def closeEvent(self, _):
         self.client.stop()
         
-
+### Start the ssh tunnel and connect to scrcpy server
 def connectScrcpySSH(sshIP, ssUser, sshPasswd, serial):
     connectSSH(sshIP, ssUser, sshPasswd)
     mainWin = ConnectScrcpy(serial)

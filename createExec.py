@@ -12,9 +12,20 @@ import os
 from cx_Freeze import setup, Executable
 from createUserUbuntu import createUserSSH
 
-# The scrcpy server IPv4
+### The scrcpy server IPv4
 serverIP = ''
 
+### Sudo use and passwd for create new user remotely
+sshSudoUser = ''
+sshSudoPasswd = ''
+
+### change this variable if you want to put a inco to the .app file
+appIconFile = ''
+
+### change this for select build distribution option, check cx_Freeze docs
+dist = ''
+
+### Check passwd format for secure password
 def checkPasswdFormat(passw):
 
     if not 8 <= len(passw) <= 12:
@@ -36,6 +47,7 @@ def checkPasswdFormat(passw):
 
     return numeros != 0 and mayusculas !=0 and minusculas != 0
 
+### Check input password an config password
 def checkPassword(password, passwordConfirm):
 	if not checkPasswdFormat(password):
 		return 1
@@ -44,6 +56,7 @@ def checkPassword(password, passwordConfirm):
 	else:
 		return 0
 
+### check expire date format YYY-MM-DD
 def checkExpireDate():
 	try:
 		datetime.date.fromisoformat(expireDate.get())
@@ -51,15 +64,14 @@ def checkExpireDate():
 	except ValueError:
 		return 1
 
+### generate the python binary to connect remotely
 def generateBinary(scriptName):
-	dist = "" # change to bdist mac if want to generate a MacOS .app
-
 	buildExeOptions = dict(
 		include_msvcr=True
 	)
 
 	buildMacOptions = dict(
-		iconfile="", # change if you want to put a logo
+		iconfile=appIconFile, # change if you want to put a logo
 		bundle_name=scriptName
 	)
 
@@ -81,6 +93,7 @@ def generateBinary(scriptName):
 		script_args=["build", dist]
 		)
 
+### Copy to a file the connection script to generate a temp script
 def generateScript(scriptName):
 
 	script = f"""
@@ -94,7 +107,7 @@ if __name__ == '__main__':
 	with open(scriptName, 'w') as file:
 		file.write(script)
 
-
+### Check UI input and generates new user an generates the binary file
 def checkAndCreateExec():
 	if checkPassword(password.get(), passwordConfirm.get()) == 1:
 		messagebox.showerror("ERROR", "Formato de la contraseña erroneo, esta tiene que tener de 8 a 12 caracteres, al menos un numero, una mayuscula y una minuscula")
@@ -102,17 +115,21 @@ def checkAndCreateExec():
 		messagebox.showerror("ERROR", "Las contraseñas no coinciden")
 	elif checkExpireDate() == 1:
 		messagebox.showerror("ERROR", "El formato de la fecha de expiracion no es correcto, es YYYY-MM-DD")
-	else:s
-		createUserSSH(user=user.get(), password=password.get(), expirationDate=expireDate.get(), sshUser='', sshPasswd='', sshIP=serverIP)
+	else:
+		# Creates a temp SSH user for crete the tunnel
+		createUserSSH(user=user.get(), password=password.get(), expirationDate=expireDate.get(), sshUser=sshSudoUser, sshPasswd=sshSudoPasswd, sshIP=serverIP)
+
 		scriptName = user.get() + "RemoteScrcpy"
 		generateScript(scriptName+ ".py")
+
+		# generates the binary and delete the temp script
 		messagebox.showinfo("INFO", "El usuario " + user.get() + " se ha creado correctamente, pulsa ok para generar el binario")
 		generateBinary(scriptName)
 		messagebox.showinfo("INFO", "Binario generado puede cerrar el programa")
 		os.remove(scriptName + ".py")
 
 
-
+### Creates a tkinter interface to get user create data and device serial
 root = Tk()
 root.geometry("300x500")
 root.title("Remote Scrcpy")
