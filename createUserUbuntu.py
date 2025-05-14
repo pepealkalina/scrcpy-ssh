@@ -17,10 +17,13 @@ def createUserSSH(user, password, expirationDate, sshUser, sshPasswd, sshIP):
     stdin, stdout, stderr = sshConn.exec_command(userAdd)
     stdin.write(sshPasswd + "\n")
 
-    changePasswd = "echo '" + user + ":" + password + "' | sudo -S -p '' chpasswd"
+    changePasswd = f"sudo -S -p '' usermod --password $(echo {password} | openssl passwd -1 -stdin) {user}"
+    print(changePasswd)
     stdin, stdout, stderr = sshConn.exec_command(changePasswd)
     stdin.write(sshPasswd + "\n")
 
     changeExpireDate = "sudo -S -p '' chage -E " + expirationDate + " " + user
     stdin, stdout, stderr = sshConn.exec_command(changeExpireDate)
     stdin.write(sshPasswd + "\n")
+
+    sshConn.close()

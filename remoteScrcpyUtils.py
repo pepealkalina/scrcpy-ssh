@@ -5,7 +5,6 @@ Author: Pepe Alkalina
 '''
 
 from scrcpy import Client, EVENT_FRAME
-from createWindow import *
 import cv2
 import sys
 from threading import Thread, Event
@@ -13,7 +12,7 @@ from paramiko import SSHClient, WarningPolicy, Transport
 from paramiko_demos.forward import forward_tunnel
 from paramiko_demos.rforward import reverse_forward_tunnel
 from PySide6.QtGui import QImage, QKeyEvent, QPixmap
-from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout ,QMessageBox, QMainWindow
 
 if not QApplication.instance():
     app = QApplication([])
