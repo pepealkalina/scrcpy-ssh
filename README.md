@@ -34,20 +34,39 @@ And finally it generates a binary which allows us to do the above automation wit
 ### Setting up
 
 > [!IMPORTANT]
-> You need python 3.10 and pip installed for setting up the project, if there is any problem with the packages installation install it manually
+> You need <b>python 3.10</b>, <b>pip</b> and <b>venv or virtual enviroment</b> installed for setting up the project, if there is any problem with the packages installation install it manually
 
 To set up the project follow the following steps:
 
 1. Create with `venv` a virtual enviroment and activate it
+* Bash
+    ```bash
+    $> python3.10 -m venv <path_of_venv>
+    $> source <path_of_venv>/bin/activate
     ```
-    $> python3.10 -m venv <path-of-venv>
-    $> source <path-of-venv>/bin/activate
+* Powershell
+    ```Powershell
+    C:\> python -m venv <path_of_venv>
+    C:\> source .\<path_of_venv>\Scripts\activate
     ```
 
 2. Install the packages in `requirements.txt` with pip
-    ```
+* Bash
+    ```bash
     $> pip install -r requirements.txt
     ```
+* Powershell
+    ```Powershell
+    C:\> pip install -r .\requirements.txt
+    ```
+
+3. Install <b>tkinter</b> library in ubuntu
+    ```bash
+    $> sudo apt install python3.10-tk
+
+    ```
+> [!NOTE]
+> Usually tkinter comes with python but in some linux distros you need to install it manually
 
 Then you can use the script if there is some troubles, these are the packages to install they manually
 
