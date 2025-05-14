@@ -1,7 +1,7 @@
 '''
 Filename: createUserUbuntu.py
 Created Date: Tuesday, May 13th 2025, 8:41:43 am
-Author: Pepe Alkalina
+Author: Pedro Reina
 '''
 
 import paramiko
