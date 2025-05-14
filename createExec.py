@@ -22,9 +22,6 @@ sshSudoPasswd = ''
 ### change this variable if you want to put a inco to the .app file
 appIconFile = ''
 
-### change this for select build distribution option, check cx_Freeze docs
-dist = ''
-
 ### Check passwd format for secure password
 def checkPasswdFormat(passw):
 
@@ -90,7 +87,7 @@ def generateBinary(scriptName):
 		description="Connect to an remote scrcpy server with a ssh tunnel",
 		options=dict(build_exe=buildExeOptions, bdist_mac=buildMacOptions), 
 		executables=executables,
-		script_args=["build", dist]
+		script_args=["build"]
 		)
 
 ### Copy to a file the connection script to generate a temp script

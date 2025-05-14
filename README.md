@@ -86,7 +86,6 @@ In `createExec.py` you need to change some global variable to configure the ssh 
 * `serverIP`: Is the scrcpy and ssh server IP
 * `sshSudoUser` and `sshSudoPasswd`: Are the sudo credential of the linux server for create the user
 * `appIconFile`: If you want to generate a `.app` MacOS file and give it an icon set the path of the icon here
-* `dist`: set buid distribution for the binary
 
 ### Usage
 
