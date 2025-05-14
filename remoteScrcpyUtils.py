@@ -1,7 +1,7 @@
 '''
 Filename: remoteScrcpySSH.py
 Created Date: Friday, May 9th 2025, 10:27:13 am
-Author: Pepe Alkalina
+Author: Pedro Reina
 '''
 
 from scrcpy import Client, EVENT_FRAME
