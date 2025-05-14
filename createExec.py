@@ -8,10 +8,12 @@ from tkinter import *
 from tkinter import messagebox
 import datetime
 import sys
+import os
 from cx_Freeze import setup, Executable
 from createUserUbuntu import createUserSSH
 
-serverIP = '10.11.23.166'
+# The scrcpy server IPv4
+serverIP = ''
 
 def checkPasswdFormat(passw):
 
@@ -50,8 +52,15 @@ def checkExpireDate():
 		return 1
 
 def generateBinary(scriptName):
-	buildOptions = dict(
+	dist = "" # change to bdist mac if want to generate a MacOS .app
+
+	buildExeOptions = dict(
 		include_msvcr=True
+	)
+
+	buildMacOptions = dict(
+		iconfile="", # change if you want to put a logo
+		bundle_name=scriptName
 	)
 
 	if sys.platform == 'win32':
@@ -60,16 +69,16 @@ def generateBinary(scriptName):
 		base = None
 
 	executables = [
-		Executable(scriptName)
+		Executable(scriptName+ ".py")
 	]
 
 	setup(
-		name="Remote Scrcpy Morse",
+		name="Remote Scrcpy",
 		version="0.1",
 		description="Connect to an remote scrcpy server with a ssh tunnel",
-		options=dict(build_exe=buildOptions), 
+		options=dict(build_exe=buildExeOptions, bdist_mac=buildMacOptions), 
 		executables=executables,
-		script_args=["build"]
+		script_args=["build", dist]
 		)
 
 def generateScript(scriptName):
@@ -93,20 +102,20 @@ def checkAndCreateExec():
 		messagebox.showerror("ERROR", "Las contraseñas no coinciden")
 	elif checkExpireDate() == 1:
 		messagebox.showerror("ERROR", "El formato de la fecha de expiracion no es correcto, es YYYY-MM-DD")
-	else:
-		print(password.get())
-		createUserSSH(user=user.get(), password=password.get(), expirationDate=expireDate.get(), sshUser='morse', sshPasswd='lab333', sshIP=serverIP)
-		scriptName = user.get() + "RemoteScrcpy.py"
-		generateScript(scriptName)
+	else:s
+		createUserSSH(user=user.get(), password=password.get(), expirationDate=expireDate.get(), sshUser='', sshPasswd='', sshIP=serverIP)
+		scriptName = user.get() + "RemoteScrcpy"
+		generateScript(scriptName+ ".py")
 		messagebox.showinfo("INFO", "El usuario " + user.get() + " se ha creado correctamente, pulsa ok para generar el binario")
 		generateBinary(scriptName)
 		messagebox.showinfo("INFO", "Binario generado puede cerrar el programa")
+		os.remove(scriptName + ".py")
 
 
 
 root = Tk()
 root.geometry("300x500")
-root.title("morse")
+root.title("Remote Scrcpy")
 
 Label(root, text="Nombre de Usuario").pack(pady=5)
 user = Entry(root)

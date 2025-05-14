@@ -18,7 +18,6 @@ def createUserSSH(user, password, expirationDate, sshUser, sshPasswd, sshIP):
     stdin.write(sshPasswd + "\n")
 
     changePasswd = f"sudo -S -p '' usermod --password $(echo {password} | openssl passwd -1 -stdin) {user}"
-    print(changePasswd)
     stdin, stdout, stderr = sshConn.exec_command(changePasswd)
     stdin.write(sshPasswd + "\n")
 
