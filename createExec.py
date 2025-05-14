@@ -119,7 +119,7 @@ def checkAndCreateExec():
 		# Creates a temp SSH user for crete the tunnel
 		createUserSSH(user=user.get(), password=password.get(), expirationDate=expireDate.get(), sshUser=sshSudoUser, sshPasswd=sshSudoPasswd, sshIP=serverIP)
 
-		scriptName = user.get() + "RemoteScrcpy"
+		scriptName = user.get() + serial.get() + "RemoteScrcpy"
 		generateScript(scriptName+ ".py")
 
 		# generates the binary and delete the temp script

@@ -6,7 +6,7 @@ Author: Pepe Alkalina
 
 import paramiko
 
-# Send commands via SSH with paramiko
+### Send commands via SSH with paramiko
 def createUserSSH(user, password, expirationDate, sshUser, sshPasswd, sshIP):
     
     sshConn = paramiko.SSHClient()
